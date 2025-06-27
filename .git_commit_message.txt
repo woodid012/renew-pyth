@@ -1,1 +1,0 @@
-Add vercel.json and update .gitignore
