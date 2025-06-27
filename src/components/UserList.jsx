@@ -117,13 +117,13 @@ function UserList() {
   }, [])
 
   return (
-    <div className="user-management">
+    <div className="max-w-4xl mx-auto p-8 sm:p-4">
       <h2>User Management</h2>
       
-      {error && <div className="error-message">{error}</div>}
+      {error && <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg mb-4">{error}</div>}
       
-      <form onSubmit={editingUser ? updateUser : addUser} className="user-form">
-        <div className="form-group">
+      <form onSubmit={editingUser ? updateUser : addUser} className="bg-white p-8 rounded-xl shadow-md mb-8 border border-gray-200">
+        <div className="flex flex-col sm:flex-row gap-4 mb-4">
           <input
             type="text"
             placeholder="Name"
@@ -131,6 +131,7 @@ function UserList() {
             onChange={(e) => setName(e.target.value)}
             disabled={loading}
             required
+            className="flex-1 p-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
           />
           <input
             type="email"
@@ -139,45 +140,52 @@ function UserList() {
             onChange={(e) => setEmail(e.target.value)}
             disabled={loading}
             required
+            className="flex-1 p-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
           />
         </div>
-        <div className="form-buttons">
-          <button type="submit" disabled={loading}>
+        <div className="flex gap-2">
+          <button type="submit" disabled={loading}
+            className="py-3 px-6 rounded-lg text-base font-medium cursor-pointer transition-all duration-200
+            bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed">
             {loading ? 'Processing...' : editingUser ? 'Update User' : 'Add User'}
           </button>
           {editingUser && (
-            <button type="button" onClick={cancelEdit} disabled={loading}>
+            <button type="button" onClick={cancelEdit} disabled={loading}
+              className="py-3 px-6 rounded-lg text-base font-medium cursor-pointer transition-all duration-200
+              bg-gray-500 text-white hover:bg-gray-600 disabled:opacity-60 disabled:cursor-not-allowed">
               Cancel
             </button>
           )}
         </div>
       </form>
 
-      <div className="users-list">
+      <div className="mt-8">
         <h3>Users ({users.length})</h3>
         {loading && users.length === 0 ? (
-          <div className="loading">Loading users...</div>
+          <div className="text-center p-12 text-gray-500 italic">Loading users...</div>
         ) : users.length === 0 ? (
-          <div className="no-users">No users found. Add your first user above.</div>
+          <div className="text-center p-12 text-gray-500 italic">No users found. Add your first user above.</div>
         ) : (
-          <div className="users-grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {users.map((user) => (
-              <div key={user._id} className="user-card">
-                <div className="user-info">
-                  <div className="user-name">{user.name}</div>
-                  <div className="user-email">{user.email}</div>
+              <div key={user._id} className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02]">
+                <div className="mb-4">
+                  <div className="text-lg font-semibold text-gray-900 mb-1">{user.name}</div>
+                  <div className="text-sm text-gray-600">{user.email}</div>
                   {user._id && <div className="user-id">ID: {user._id}</div>}
                 </div>
-                <div className="user-actions">
+                <div className="flex gap-2 mt-4">
                   <button 
-                    className="edit-btn" 
+                    className="flex-1 py-2 px-4 text-sm font-medium rounded-lg transition-all duration-200
+                    bg-yellow-500 text-white hover:bg-yellow-600 disabled:opacity-60 disabled:cursor-not-allowed" 
                     onClick={() => startEdit(user)}
                     disabled={loading}
                   >
                     Edit
                   </button>
                   <button 
-                    className="delete-btn" 
+                    className="flex-1 py-2 px-4 text-sm font-medium rounded-lg transition-all duration-200
+                    bg-red-500 text-white hover:bg-red-600 disabled:opacity-60 disabled:cursor-not-allowed" 
                     onClick={() => deleteUser(user)}
                     disabled={loading}
                   >

@@ -56,10 +56,20 @@ class handler(BaseHTTPRequestHandler):
                 self.send_error_response(400, 'Name and email are required')
                 return
             
+            # Use email as username if not provided
+            if 'username' not in body or body['username'] is None:
+                body['username'] = body['email']
+
             client = MongoClient(MONGODB_URI)
             db = client.get_database()
             users_collection = db.users
             
+            # Check if a user with the same email already exists
+            if users_collection.find_one({'email': body['email']}):
+                self.send_error_response(409, 'User with this email already exists')
+                client.close()
+                return
+
             result = users_collection.insert_one(body)
             client.close()
             
@@ -113,7 +123,7 @@ class handler(BaseHTTPRequestHandler):
             
             result = users_collection.update_one(
                 {'_id': ObjectId(user_id)}, 
-                {'$set': {'name': body['name'], 'email': body['email']}}
+                {'$set': {'name': body['name'], 'email': body['email'], 'username': body['email']}}
             )
             client.close()
             

@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import UserList from './components/UserList'
 import { api } from './utils/api'
-import './App.css'
+
 
 function App() {
   const [apiStatus, setApiStatus] = useState('Loading...')
@@ -14,8 +14,8 @@ function App() {
   }, [])
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Renew Python App</h1>
+    <div className="p-5">
+      <h1 className="text-3xl font-bold mb-4">Renew Python App</h1>
       <p>API Status: {apiStatus}</p>
       <UserList />
     </div>
