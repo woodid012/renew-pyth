@@ -1,14 +1,14 @@
 // src/App.jsx
 import { useState, useEffect } from 'react'
 import UserList from './components/UserList'
+import { api } from './utils/api'
 import './App.css'
 
 function App() {
   const [apiStatus, setApiStatus] = useState('Loading...')
 
   useEffect(() => {
-    fetch('/api/hello')
-      .then(res => res.json())
+    api.get('/api/hello')
       .then(data => setApiStatus(data.message))
       .catch(err => setApiStatus('API Error: ' + err.message))
   }, [])
