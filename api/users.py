@@ -19,6 +19,12 @@ class handler(BaseHTTPRequestHandler):
             users = list(users_collection.find({}, {'_id': 0}))
             client.close()
             
+            # Convert any datetime objects to strings
+            for user in users:
+                for key, value in user.items():
+                    if hasattr(value, 'isoformat'):  # datetime object
+                        user[key] = value.isoformat()
+            
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
