@@ -8,7 +8,7 @@ function UserList() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/users')
+      const response = await fetch('/api/users')
       const data = await response.json()
       setUsers(data.users || [])
     } catch (error) {
