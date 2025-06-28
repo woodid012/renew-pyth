@@ -11,14 +11,24 @@ export const apiRequest = async (endpoint, options = {}) => {
     ...options
   };
 
-  const response = await fetch(url, defaultOptions);
+  console.log(`Making API request to: ${url}`);
   
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ error: 'Network error' }));
-    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+  try {
+    const response = await fetch(url, defaultOptions);
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Network error' }));
+      console.error(`API Error: ${response.status}`, errorData);
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('API Response:', data);
+    return data;
+  } catch (error) {
+    console.error('API Request failed:', error);
+    throw error;
   }
-  
-  return response.json();
 };
 
 export const api = {
